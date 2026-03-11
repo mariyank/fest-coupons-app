@@ -95,7 +95,7 @@ with st.form("main_form", clear_on_submit=True):
                     
 # Generate the custom URL for this exact buyer
                 # (Replace the URL below with your actual Streamlit Cloud URL!)
-                base_url = "https://fest-coupons-app.streamlit.app/"
+                base_url = "https://fest-coupons-app-vgmddeqz6bbvaoflhz9tqx.streamlit.app/"
                 ticket_url = f"{base_url}?ticket={code}"
                 
                 msg = f"Hi {buyer}, thanks for supporting! Click here to view your official digital entry pass for the fest: {ticket_url}"
