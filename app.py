@@ -93,7 +93,12 @@ with st.form("main_form", clear_on_submit=True):
                 if len(clean_mobile) == 10:
                     clean_mobile = "91" + clean_mobile
                     
-                msg = f"Hi {buyer}, your lucky coupon code for the fest is {code}. Thanks for supporting!"
+# Generate the custom URL for this exact buyer
+                # (Replace the URL below with your actual Streamlit Cloud URL!)
+                base_url = "https://fest-coupons-app.streamlit.app/"
+                ticket_url = f"{base_url}?ticket={code}"
+                
+                msg = f"Hi {buyer}, thanks for supporting! Click here to view your official digital entry pass for the fest: {ticket_url}"
                 st.link_button("📲 Send to Buyer", f"https://wa.me/{clean_mobile}?text={msg.replace(' ', '%20')}")
                 
             else:
