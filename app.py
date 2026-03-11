@@ -16,6 +16,38 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 member_df = conn.read(worksheet="Members")
 member_options = member_df['Name'] + " (" + member_df['ID'].astype(str) + ")"
 
+# --- BLOCK B: BUYER TICKET DISPLAY ---
+# Check if a buyer clicked their unique WhatsApp link
+if "ticket" in st.query_params:
+    ticket_code = st.query_params["ticket"]
+    
+    # Hide the sidebar and standard menu for a cleaner look
+    st.set_page_config(initial_sidebar_state="collapsed")
+    
+    # Look up the ticket in the database to prove it's valid
+    sales_df = conn.read(worksheet="Sales", ttl=0)
+    match = sales_df[sales_df['Coupon Code'] == ticket_code]
+    
+    st.title("🎟️ Official Fest Pass")
+    
+    if not match.empty:
+        buyer_name = match.iloc[0]['Buyer Name']
+        
+        # Design a beautiful "Digital Ticket" card
+        st.success(f"✅ **VALID TICKET**")
+        st.info(f"""
+        **Name:** {buyer_name}
+        **Ticket ID:** {ticket_code}
+        
+        *Organized by the Malayali Committee, Jamia Millia Islamia*
+        """)
+        st.warning("Please show this screen at the entry gate.")
+    else:
+        st.error("❌ Invalid or missing ticket code.")
+        
+    # STOP the code here so the buyer never sees the seller form!
+    st.stop()
+
 # --- BLOCK C: REGISTRATION FORM ---
 st.title("🎟️ Community Fundraiser")
 
