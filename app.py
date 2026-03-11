@@ -16,36 +16,70 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 member_df = conn.read(worksheet="Members")
 member_options = member_df['Name'] + " (" + member_df['ID'].astype(str) + ")"
 
-# --- BLOCK B: BUYER TICKET DISPLAY ---
-# Check if a buyer clicked their unique WhatsApp link
+# --- BLOCK B: BUYER TICKET DISPLAY (TESTING VERSION) ---
 if "ticket" in st.query_params:
     ticket_code = st.query_params["ticket"]
     
-    # Hide the sidebar and standard menu for a cleaner look
+    # Setup clean mobile view
     st.set_page_config(initial_sidebar_state="collapsed")
     
-    # Look up the ticket in the database to prove it's valid
     sales_df = conn.read(worksheet="Sales", ttl=0)
     match = sales_df[sales_df['Coupon Code'] == ticket_code]
     
-    st.title("🎟️ Official Fest Pass")
-    
     if not match.empty:
         buyer_name = match.iloc[0]['Buyer Name']
+        buyer_mobile = match.iloc[0]['Mobile']
         
-        # Design a beautiful "Digital Ticket" card
-        st.success(f"✅ **VALID TICKET**")
-        st.info(f"""
-        **Name:** {buyer_name}
-        **Ticket ID:** {ticket_code}
-        
-        *Organized by the Malayali Committee, Jamia Millia Islamia*
-        """)
-        st.warning("Please show this screen at the entry gate.")
+        # --- THE DIGITAL TICKET WIREFRAME ---
+        with st.container(border=True):
+            
+            # SECTION 1: TOP BRANDING (PLACEHOLDERS)
+            t_col1, t_col2 = st.columns([1, 4])
+            with t_col1:
+                st.markdown("### 🏵️")
+                st.caption("[Logo Here]")
+            with t_col2:
+                st.markdown("<h4 style='margin:0; text-align:right;'>MUZIRIS JMI</h4>", unsafe_allow_html=True)
+                st.markdown("<h5 style='margin:0; text-align:right;'>KERALA FESTIVAL 2026</h5>", unsafe_allow_html=True)
+            
+            st.divider()
+
+            # SECTION 2: DYNAMIC TICKET DATA
+            st.success(f"✅ **VALID TICKET**")
+            st.markdown(f"<h2 style='text-align:center;'>No. {ticket_code}</h2>", unsafe_allow_html=True)
+            st.markdown(f"**Name:** {buyer_name}")
+            st.markdown(f"**Phone:** {buyer_mobile}")
+            
+            st.divider()
+            
+            # SECTION 3: PRIZE IMAGERY (PLACEHOLDERS)
+            st.info("📱 🔊 🎧 **[Large Image of Prizes Will Go Here]**")
+            st.markdown("<h3 style='text-align:center; color:#CC9900;'>LUCKY DRAW CONTEST</h3>", unsafe_allow_html=True)
+            st.markdown("🏆 **1st Prize:** Brand New Smartphone")
+            st.markdown("🏆 **2nd Prize:** Premium Bluetooth Speaker")
+            st.markdown("🏆 **3rd Prize:** Noise-Canceling Headphones")
+            
+            st.divider()
+
+            # SECTION 4: VERIFICATION & PRICE BADGE
+            f_col1, f_col2 = st.columns([3, 1])
+            with f_col1:
+                st.caption("🎟️ Present this digital coupon at the gate.")
+                st.caption("*Winners announced on 9th April 2026*")
+            with f_col2:
+                # Custom CSS for the round ₹100 Price Badge
+                st.markdown("""
+                <div style='background-color:#1E3A8A; color:white; border-radius:50%; 
+                            width:60px; height:60px; display:flex; 
+                            align-items:center; justify-content:center; font-size:18px;
+                            font-weight:bold; margin:auto;'>
+                    ₹100
+                </div>
+                """, unsafe_allow_html=True)
+
     else:
         st.error("❌ Invalid or missing ticket code.")
         
-    # STOP the code here so the buyer never sees the seller form!
     st.stop()
 
 # --- BLOCK C: REGISTRATION FORM ---
