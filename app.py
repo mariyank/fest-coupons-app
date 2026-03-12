@@ -6,14 +6,17 @@ import string
 from datetime import datetime
 
 # --- BLOCK A: SETUP ---
-st.set_page_config(page_title="Fest Lucky Coupon", layout="centered")
+st.set_page_config(page_title="Fest Lucky Coupon", layout="centered", initial_sidebar_state="collapsed")
+
+# --- DATABASE CONNECTION ---
+conn = st.connection("gsheets", type=GSheetsConnection)
+member_df = conn.read(worksheet="Members", ttl=0)
 
 # --- BLOCK B: BUYER TICKET DISPLAY (TESTING VERSION) ---
 if "ticket" in st.query_params:
     ticket_code = st.query_params["ticket"]
     
     # Setup clean mobile view
-    st.set_page_config(initial_sidebar_state="collapsed")
     
     # 1. HANDLE FESTIVAL COUPONS
     if ticket_code.startswith("FEST-"):
