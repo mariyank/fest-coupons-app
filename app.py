@@ -23,6 +23,9 @@ def load_image_base64(img_name):
             return f"data:image/{ext};base64,{encoded}"
     return ""
 
+# --- SPONSOR LINK ---
+myg_url = "https://www.myg.in/?srsltid=AfmBOooV4bFo8kgYX1cuhrlgiSD6BEnIImreRGal6opfUojOJ2mJ0XP8"
+
 # --- BLOCK B: PREMIUM TICKET DISPLAY ---
 if "ticket" in st.query_params:
     ticket_code = st.query_params["ticket"]
@@ -90,10 +93,17 @@ if "ticket" in st.query_params:
             <p style="font-size:13px; color:#666; margin-top:10px;">🎟️ Present this digital pass at the entry gate.</p>
             </div></div>
             <div style="text-align:center; color:#E32636; font-size:18px; margin:-14px 0; position:relative; z-index:10; letter-spacing:4px;">✂ - - - - - - - - - -</div>
+            
             <div style="background-color:#E32636; {m_base} padding:20px; text-align:center; position:relative;">
             <p style="color:#FFF9E6; font-size:12px; text-transform:uppercase; font-weight:bold; margin:0 0 8px 0;">Exclusive Sponsor Offer</p>
-            <img src="{img_myg}" style="height:40px; background:white; padding:5px; border-radius:5px; margin-bottom:10px;">
-            <div style="background:#FF6600; color:white; padding:10px; border-radius:8px; border:2px dashed white; font-weight:bold;">🎁 Use code JMIFEST30 for 30% OFF!</div>
+            
+            <a href="{myg_url}" target="_blank" style="text-decoration:none; display:block;">
+                <img src="{img_myg}" style="height:40px; background:white; padding:5px; border-radius:5px; margin-bottom:10px; display:inline-block;">
+                <div style="background:#FF6600; color:white; padding:10px; border-radius:8px; border:2px dashed white; font-weight:bold; cursor:pointer;">
+                    🎁 Use code JMIFEST5 for 5% OFF!
+                </div>
+            </a>
+            
             </div></div>
             """
             st.markdown(ticket_html, unsafe_allow_html=True)
@@ -120,8 +130,9 @@ if "ticket" in st.query_params:
                 st.divider()
                 st.info("🙏 Thank you for your generous support of the Malayali Committee!")
                 st.divider()
-                st.warning("🎁 **Exclusive Sponsor Offer:** Get 30% off smart gadgets at MyG! Use code JMIFEST30.")
-                st.button("Claim 30% Off Now") 
+                st.warning("🎁 **Exclusive Sponsor Offer:** Get 5% off smart gadgets at MyG! Use code JMIFEST5.")
+                # Updated to use the clickable link button
+                st.link_button("Claim 5% Off Now", myg_url, type="primary") 
         else:
             st.error("❌ Invalid or missing receipt code.")
             
