@@ -61,30 +61,31 @@ if "ticket" in st.query_params:
             <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #E32636; border: 6px solid transparent; background-clip: padding-box; {m_border} z-index: 2;"></div>
             <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #FFF9E6; border: 12px solid transparent; background-clip: padding-box; {m_inner} z-index: 3;"></div>
             
-            <div style="position: relative; z-index: 4; padding: 10px; text-align: center;">
-            <div style="padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="position: relative; z-index: 4; padding: 26px 26px 15px 26px; text-align: center;">
+            <div style="padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; gap: 5px;"><img src="{img_smrti}" style="height:42px;"><img src="{img_muziris}" style="height:42px;"></div>
             <div style="color:#E32636; flex-grow:1;"><h3 style="margin:0; font-size:14px;">MUZIRIS JMI</h3></div>
             <img src="{img_myg}" style="height:32px; background:white; padding:4px; border-radius:4px; border:1px solid #E32636;">
             </div>
-            <img src="{img_luckydraw}" style="width:240px; margin-bottom:2px;">
             
-            <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span style="font-size:26px; font-family:'Aref Ruqaa', serif; color:#222; margin-top:-4px;">{buyer_name}</span></div>
-            
-            <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span style="font-size:20px; font-family:'Amiri', serif; color:#222;">{buyer_mobile}</span></div>
-            
-            <div style="margin:5px auto; position:relative; display:inline-block;">
-            <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:#088F8F; {mt_base} z-index:1;"></div>
-            <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:#8F0808; border:2px solid transparent; background-clip:padding-box; {mt_border} z-index:2;"></div>
-            <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:#088F8F; border:4px solid transparent; background-clip:padding-box; {mt_inner} z-index:3;"></div>
-            <div style="position:relative; z-index:4; padding:8px 20px; color:white; font-size:18px; font-weight:bold;">No. {ticket_code}</div>
+            <div style="margin: 15px auto 25px auto; position: relative; display: inline-block;">
+            <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #088F8F; {mt_base} z-index: 1;"></div>
+            <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #8F0808; border: 2px solid transparent; background-clip: padding-box; {mt_border} z-index: 2;"></div>
+            <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #088F8F; border: 4px solid transparent; background-clip: padding-box; {mt_inner} z-index: 3;"></div>
+            <div style="position: relative; z-index: 4; padding: 8px 20px; color: white; font-size: 18px; font-weight: bold;">No. {ticket_code}</div>
             </div>
-            
-            <div style="padding: 0 5px;">
-            <img src="{img_prizes}" style="width:100%; border-radius:8px; border:1px solid rgba(227,38,54,0.2);">
+
+            <div style="margin: 10px 0;">
+                <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin: 4px 0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span style="font-size:26px; font-family:'Aref Ruqaa', serif; color: #222; margin-top: -4px;">{buyer_name}</span></div>
+                <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin: 4px 0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span style="font-size:20px; font-family:'Amiri', serif; color: #222;">{buyer_mobile}</span></div>
             </div>
-            
-            <p style="font-size:13px; color:#666; margin-top:5px; margin-bottom:0px;">🎟️ Present this digital pass at the entry gate.</p>
+
+            <div style="margin-top: 15px;">
+                <img src="{img_luckydraw}" style="width:240px; margin-bottom:5px;">
+                <img src="{img_prizes}" style="width:100%; border-radius:8px; border:1px solid rgba(227,38,54,0.2);">
+            </div>
+
+            <p style="font-size:13px; color:#666; margin-top:10px;">🎟️ Present this digital pass at the entry gate.</p>
             </div></div>
             <div style="text-align:center; color:#E32636; font-size:18px; margin:-14px 0; position:relative; z-index:10; letter-spacing:4px;">✂ - - - - - - - - - -</div>
             <div style="background-color:#E32636; {m_base} padding:20px; text-align:center; position:relative;">
