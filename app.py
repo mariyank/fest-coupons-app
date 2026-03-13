@@ -3,6 +3,8 @@ from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 import random
 import string
+import base64
+import os
 from datetime import datetime
 
 # --- BLOCK A: SETUP ---
@@ -12,13 +14,20 @@ st.set_page_config(page_title="Fest Lucky Coupon", layout="centered", initial_si
 conn = st.connection("gsheets", type=GSheetsConnection)
 member_df = conn.read(worksheet="Members", ttl=0)
 
-# --- BLOCK B: BUYER TICKET DISPLAY (TESTING VERSION) ---
+# --- HELPER: LOAD IMAGES FOR HTML ---
+def load_image_base64(img_name):
+    if os.path.exists(img_name):
+        with open(img_name, "rb") as f:
+            encoded = base64.b64encode(f.read()).decode()
+            ext = "png" if img_name.lower().endswith(".png") else "jpeg"
+            return f"data:image/{ext};base64,{encoded}"
+    return ""
+
+# --- BLOCK B: PREMIUM TICKET DISPLAY ---
 if "ticket" in st.query_params:
     ticket_code = st.query_params["ticket"]
     
-    # Setup clean mobile view
-    
-    # 1. HANDLE FESTIVAL COUPONS
+    # 1. HANDLE FESTIVAL COUPONS (LUCKY DRAW)
     if ticket_code.startswith("FEST-"):
         sales_df = conn.read(worksheet="Sales", ttl=0)
         match = sales_df[sales_df['Coupon Code'] == ticket_code]
@@ -27,49 +36,59 @@ if "ticket" in st.query_params:
             buyer_name = match.iloc[0]['Buyer Name']
             buyer_mobile = match.iloc[0]['Mobile']
             
-            with st.container(border=True):
-                # TOP BRANDING
-                t_col1, t_col2 = st.columns([1, 4])
-                with t_col1:
-                    st.markdown("### 🏵️")
-                    st.caption("[Logo Here]")
-                with t_col2:
-                    st.markdown("<h4 style='margin:0; text-align:right;'>MUZIRIS JMI</h4>", unsafe_allow_html=True)
-                    st.markdown("<h5 style='margin:0; text-align:right;'>KERALA FESTIVAL 2026</h5>", unsafe_allow_html=True)
-                
-                st.divider()
+            # Load assets for the premium HTML ticket
+            img_smrti = load_image_base64("smrti.png")
+            img_muziris = load_image_base64("muziris.png")
+            img_myg = load_image_base64("myg.png")
+            img_luckydraw = load_image_base64("luckydraw.png")
+            img_prizes = load_image_base64("prizes.png")
 
-                # DYNAMIC TICKET DATA
-                st.success(f"✅ **VALID TICKET**")
-                st.markdown(f"<h2 style='text-align:center;'>No. {ticket_code}</h2>", unsafe_allow_html=True)
-                st.markdown(f"**Name:** {buyer_name}")
-                st.markdown(f"**Phone:** {buyer_mobile}")
-                
-                st.divider()
-                
-                # PRIZE IMAGERY
-                st.info("📱 🔊 🎧 **[Large Image of Prizes Will Go Here]**")
-                st.markdown("<h3 style='text-align:center; color:#CC9900;'>LUCKY DRAW CONTEST</h3>", unsafe_allow_html=True)
-                st.markdown("🏆 **1st Prize:** Brand New Smartphone")
-                st.markdown("🏆 **2nd Prize:** Premium Bluetooth Speaker")
-                st.markdown("🏆 **3rd Prize:** Noise-Canceling Headphones")
-                
-                st.divider()
+            # Masks
+            m_base = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 16px, black 16.5px), radial-gradient(circle at 100% 0, transparent 16px, black 16.5px), radial-gradient(circle at 0 100%, transparent 16px, black 16.5px), radial-gradient(circle at 100% 100%, transparent 16px, black 16.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
+            m_border = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 22px, black 22.5px), radial-gradient(circle at 100% 0, transparent 22px, black 22.5px), radial-gradient(circle at 0 100%, transparent 22px, black 22.5px), radial-gradient(circle at 100% 100%, transparent 22px, black 22.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
+            m_inner = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 28px, black 28.5px), radial-gradient(circle at 100% 0, transparent 28px, black 28.5px), radial-gradient(circle at 0 100%, transparent 28px, black 28.5px), radial-gradient(circle at 100% 100%, transparent 28px, black 28.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
+            
+            # Mini Masks for ID Box
+            mt_base = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 8px, black 8.5px), radial-gradient(circle at 100% 0, transparent 8px, black 8.5px), radial-gradient(circle at 0 100%, transparent 8px, black 8.5px), radial-gradient(circle at 100% 100%, transparent 8px, black 8.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
+            mt_border = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 10px, black 10.5px), radial-gradient(circle at 100% 0, transparent 10px, black 10.5px), radial-gradient(circle at 0 100%, transparent 10px, black 10.5px), radial-gradient(circle at 100% 100%, transparent 10px, black 10.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
+            mt_inner = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 12px, black 12.5px), radial-gradient(circle at 100% 0, transparent 12px, black 12.5px), radial-gradient(circle at 0 100%, transparent 12px, black 12.5px), radial-gradient(circle at 100% 100%, transparent 12px, black 12.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
 
-                # VERIFICATION & PRICE BADGE
-                f_col1, f_col2 = st.columns([3, 1])
-                with f_col1:
-                    st.caption("🎟️ Present this digital coupon at the gate.")
-                    st.caption("*Winners announced on 9th April 2026*")
-                with f_col2:
-                    st.markdown("""
-                    <div style='background-color:#1E3A8A; color:white; border-radius:50%; 
-                                width:60px; height:60px; display:flex; 
-                                align-items:center; justify-content:center; font-size:18px;
-                                font-weight:bold; margin:auto;'>
-                        ₹100
-                    </div>
-                    """, unsafe_allow_html=True)
+            ticket_html = f"""
+            <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+            <div style="filter: drop-shadow(0px 8px 15px rgba(0,0,0,0.3)); max-width: 420px; margin: auto; font-family: 'Arial', sans-serif;">
+            <div style="position: relative;">
+            <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #FFF9E6; {m_base} z-index: 1;"></div>
+            <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #E32636; border: 6px solid transparent; background-clip: padding-box; {m_border} z-index: 2;"></div>
+            <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #FFF9E6; border: 12px solid transparent; background-clip: padding-box; {m_inner} z-index: 3;"></div>
+            <div style="position: relative; z-index: 4; padding: 26px 26px 15px 26px; text-align: center;">
+            <div style="padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; gap: 5px;"><img src="{img_smrti}" style="height:42px;"><img src="{img_muziris}" style="height:42px;"></div>
+            <div style="color:#E32636; flex-grow:1;"><h3 style="margin:0; font-size:14px;">MUZIRIS JMI</h3></div>
+            <img src="{img_myg}" style="height:32px; background:white; padding:4px; border-radius:4px; border:1px solid #E32636;">
+            </div>
+            <img src="{img_luckydraw}" style="width:240px; margin-bottom:5px;">
+            <div style="margin:10px auto 15px auto; position:relative; display:inline-block;">
+            <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:#088F8F; {mt_base} z-index:1;"></div>
+            <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:#8F0808; border:2px solid transparent; background-clip:padding-box; {mt_border} z-index:2;"></div>
+            <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:#088F8F; border:4px solid transparent; background-clip:padding-box; {mt_inner} z-index:3;"></div>
+            <div style="position:relative; z-index:4; padding:8px 20px; color:white; font-size:18px; font-weight:bold;">No. {ticket_code}</div>
+            </div>
+            <div style="display:flex; justify-content:center; align-items:center; gap:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span style="font-size:26px; font-family:'Aref Ruqaa', serif;">{buyer_name}</span></div>
+            <div style="display:flex; justify-content:center; align-items:center; gap:8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span style="font-size:20px; font-family:'Amiri', serif;">{buyer_mobile}</span></div>
+            <hr style="border-top: 2px dashed rgba(227,38,54,0.4); margin:15px 10px 10px 10px;">
+            <h4 style="color:#E32636; margin:0 0 5px 0;">WIN EXCITING PRIZES!</h4>
+            <img src="{img_prizes}" style="width:100%; border-radius:8px; border:1px solid rgba(227,38,54,0.2);">
+            <p style="font-size:13px; color:#666; margin-top:8px;">🎟️ Present this digital pass at the entry gate.</p>
+            </div></div>
+            <div style="text-align:center; color:#E32636; font-size:18px; margin:-14px 0; position:relative; z-index:10; letter-spacing:4px;">✂ - - - - - - - - - -</div>
+            <div style="background-color:#E32636; {m_base} padding:20px; text-align:center; position:relative;">
+            <p style="color:#FFF9E6; font-size:12px; text-transform:uppercase; font-weight:bold; margin:0 0 8px 0;">Exclusive Sponsor Offer</p>
+            <img src="{img_myg}" style="height:40px; background:white; padding:5px; border-radius:5px; margin-bottom:10px;">
+            <div style="background:#FF6600; color:white; padding:10px; border-radius:8px; border:2px dashed white; font-weight:bold;">🎁 Use code JMIFEST30 for 30% OFF!</div>
+            </div></div>
+            """
+            st.markdown(ticket_html, unsafe_allow_html=True)
+            
         else:
             st.error("❌ Invalid or missing ticket code.")
 
@@ -86,17 +105,13 @@ if "ticket" in st.query_params:
                 st.markdown("### 🏵️ MUZIRIS JMI KERALA FESTIVAL 2026")
                 st.divider()
                 st.success("✅ **Official Donation Receipt**")
-                
                 st.markdown(f"<h3 style='text-align:center; color:#1E3A8A;'>Receipt: {ticket_code}</h3>", unsafe_allow_html=True)
                 st.markdown(f"**Donor Name:** {donor_name}")
                 st.markdown(f"**Amount Contributed:** ₹{amount}")
-                
                 st.divider()
                 st.info("🙏 Thank you for your generous support of the Malayali Committee!")
-                
-                # Here is the placeholder for your Gadget Sponsor's Link!
                 st.divider()
-                st.warning("🎁 **Exclusive Sponsor Offer:** Get 30% off smart gadgets at [Sponsor Name]! Use code JMIFEST30.")
+                st.warning("🎁 **Exclusive Sponsor Offer:** Get 30% off smart gadgets at MyG! Use code JMIFEST30.")
                 st.button("Claim 30% Off Now") 
         else:
             st.error("❌ Invalid or missing receipt code.")
