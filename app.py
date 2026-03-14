@@ -307,13 +307,15 @@ with tab3:
             else:
                 donations_summary = pd.DataFrame(columns=['Student Info', 'Donations', 'LastDon'])
                 
-            # Merge both DataFrames
-            ledger_df = pd.merge(sales_summary, donations_summary, on='Student Info', how='outer').fillna(0)
-            ledger_df['Coupons'] = ledger_df['Coupons'].astype(int)
-            ledger_df['Donations'] = ledger_df['Donations'].astype(int)
+            # Merge both DataFrames (Without the global fillna!)
+            ledger_df = pd.merge(sales_summary, donations_summary, on='Student Info', how='outer')
+            
+            # ONLY fill the number columns with 0, leaving missing timestamps alone
+            ledger_df['Coupons'] = ledger_df['Coupons'].fillna(0).astype(int)
+            ledger_df['Donations'] = ledger_df['Donations'].fillna(0).astype(int)
             ledger_df['Total (₹)'] = (ledger_df['Coupons'] * 100) + ledger_df['Donations']
             
-            # Resolve the final Tie-Breaker "Last Active" timestamp
+            # Resolve the final Tie-Breaker "Last Active" timestamp safely
             ledger_df['Last Active'] = ledger_df[['LastSale', 'LastDon']].max(axis=1)
             
             # Sort by Highest Total, then Latest Active Time
