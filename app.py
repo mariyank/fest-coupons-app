@@ -34,6 +34,10 @@ if "ticket" in st.query_params:
     img_smrti = load_image_base64("smrti.png")
     img_muziris = load_image_base64("muziris.png")
     img_myg = load_image_base64("myg.png")
+    
+    # --- NEW CUSTOM TITLE IMAGES ---
+    img_title = load_image_base64("title.png")
+    img_donation = load_image_base64("donation.png")
 
     m_base = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 16px, black 16.5px), radial-gradient(circle at 100% 0, transparent 16px, black 16.5px), radial-gradient(circle at 0 100%, transparent 16px, black 16.5px), radial-gradient(circle at 100% 100%, transparent 16px, black 16.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
     m_border = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 22px, black 22.5px), radial-gradient(circle at 100% 0, transparent 22px, black 22.5px), radial-gradient(circle at 0 100%, transparent 22px, black 22.5px), radial-gradient(circle at 100% 100%, transparent 22px, black 22.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
@@ -67,7 +71,11 @@ if "ticket" in st.query_params:
             
             <div style="padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; gap: 5px;"><img src="{img_smrti}" style="height:42px;"><img src="{img_muziris}" style="height:42px;"></div>
-            <div style="color:#E32636; flex-grow:1;"><h3 style="margin:0; font-size:14px;">MUZIRIS JMI</h3></div>
+            
+            <div style="flex-grow:1; display:flex; justify-content:center;">
+                <img src="{img_title}" style="height:24px; max-width:140px; object-fit:contain;">
+            </div>
+            
             <img src="{img_myg}" style="height:32px; background:white; padding:4px; border-radius:4px; border:1px solid #E32636;">
             </div>
             
@@ -131,11 +139,17 @@ if "ticket" in st.query_params:
             
             <div style="padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; gap: 5px;"><img src="{img_smrti}" style="height:42px;"><img src="{img_muziris}" style="height:42px;"></div>
-            <div style="color:#E32636; flex-grow:1;"><h3 style="margin:0; font-size:14px;">MUZIRIS JMI</h3></div>
+            
+            <div style="flex-grow:1; display:flex; justify-content:center;">
+                <img src="{img_title}" style="height:24px; max-width:140px; object-fit:contain;">
+            </div>
+            
             <img src="{img_myg}" style="height:32px; background:white; padding:4px; border-radius:4px; border:1px solid #E32636;">
             </div>
             
-            <h2 style="color: #E32636; margin: 15px 0 25px 0; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">Donation Receipt</h2>
+            <div style="margin: 15px 0 25px 0; display: flex; justify-content: center;">
+                <img src="{img_donation}" style="max-height: 45px; max-width: 80%; object-fit: contain;">
+            </div>
             
             <div style="margin: 0 auto 25px auto; position: relative; display: inline-block;">
             <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #088F8F; {mt_base} z-index: 1;"></div>
