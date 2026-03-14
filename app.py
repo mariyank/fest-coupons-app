@@ -71,7 +71,7 @@ if "ticket" in st.query_params:
             <div style="display: flex; gap: 5px;"><img src="{img_smrti}" style="height:42px;"><img src="{img_muziris}" style="height:42px;"></div>
             
             <div style="flex-grow:1; display:flex; justify-content:center; align-items:center; padding: 0 5px;">
-                <img src="{img_title}" style="height:36px; max-width:180px; object-fit:contain;">
+                <img src="{img_title}" style="max-height:36px; max-width:100%; object-fit:contain; padding: 0 8px;">
             </div>
             
             <img src="{img_myg}" style="height:32px; background:white; padding:4px; border-radius:4px; border:1px solid #E32636;">
@@ -139,7 +139,7 @@ if "ticket" in st.query_params:
             <div style="display: flex; gap: 5px;"><img src="{img_smrti}" style="height:42px;"><img src="{img_muziris}" style="height:42px;"></div>
             
             <div style="flex-grow:1; display:flex; justify-content:center; align-items:center; padding: 0 5px;">
-                <img src="{img_title}" style="height:36px; max-width:180px; object-fit:contain;">
+                <img src="{img_title}" style="max-height:36px; max-width:100%; object-fit:contain; padding: 0 8px;">
             </div>
             
             <img src="{img_myg}" style="height:32px; background:white; padding:4px; border-radius:4px; border:1px solid #E32636;">
