@@ -34,8 +34,6 @@ if "ticket" in st.query_params:
     img_smrti = load_image_base64("smrti.png")
     img_muziris = load_image_base64("muziris.png")
     img_myg = load_image_base64("myg.png")
-    
-    # --- NEW CUSTOM TITLE IMAGES ---
     img_title = load_image_base64("title.png")
     img_donation = load_image_base64("donation.png")
 
@@ -72,8 +70,8 @@ if "ticket" in st.query_params:
             <div style="padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; gap: 5px;"><img src="{img_smrti}" style="height:42px;"><img src="{img_muziris}" style="height:42px;"></div>
             
-            <div style="flex-grow:1; display:flex; justify-content:center;">
-                <img src="{img_title}" style="height:24px; max-width:140px; object-fit:contain;">
+            <div style="flex-grow:1; display:flex; justify-content:center; align-items:center; padding: 0 5px;">
+                <img src="{img_title}" style="height:36px; max-width:180px; object-fit:contain;">
             </div>
             
             <img src="{img_myg}" style="height:32px; background:white; padding:4px; border-radius:4px; border:1px solid #E32636;">
@@ -140,22 +138,22 @@ if "ticket" in st.query_params:
             <div style="padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; gap: 5px;"><img src="{img_smrti}" style="height:42px;"><img src="{img_muziris}" style="height:42px;"></div>
             
-            <div style="flex-grow:1; display:flex; justify-content:center;">
-                <img src="{img_title}" style="height:24px; max-width:140px; object-fit:contain;">
+            <div style="flex-grow:1; display:flex; justify-content:center; align-items:center; padding: 0 5px;">
+                <img src="{img_title}" style="height:36px; max-width:180px; object-fit:contain;">
             </div>
             
             <img src="{img_myg}" style="height:32px; background:white; padding:4px; border-radius:4px; border:1px solid #E32636;">
             </div>
             
-            <div style="margin: 15px 0 25px 0; display: flex; justify-content: center;">
-                <img src="{img_donation}" style="max-height: 45px; max-width: 80%; object-fit: contain;">
+            <div style="margin: 5px 0 15px 0;">
+                <img src="{img_donation}" style="width: 240px; object-fit: contain;">
             </div>
             
             <div style="margin: 0 auto 25px auto; position: relative; display: inline-block;">
             <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #088F8F; {mt_base} z-index: 1;"></div>
             <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #8F0808; border: 2px solid transparent; background-clip: padding-box; {mt_border} z-index: 2;"></div>
             <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #088F8F; border: 4px solid transparent; background-clip: padding-box; {mt_inner} z-index: 3;"></div>
-            <div style="position: relative; z-index: 4; padding: 8px 20px; color: white; font-size: 18px; font-weight: bold;">Receipt: {ticket_code}</div>
+            <div style="position: relative; z-index: 4; padding: 8px 20px; color: white; font-size: 18px; font-weight: bold;">{ticket_code}</div>
             </div>
 
             <div style="margin-bottom: 10px;">
