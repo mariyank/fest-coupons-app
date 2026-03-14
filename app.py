@@ -30,6 +30,19 @@ myg_url = "https://www.myg.in/?srsltid=AfmBOooV4bFo8kgYX1cuhrlgiSD6BEnIImreRGal6
 if "ticket" in st.query_params:
     ticket_code = st.query_params["ticket"]
     
+    # Pre-load shared assets and masks for BOTH tickets
+    img_smrti = load_image_base64("smrti.png")
+    img_muziris = load_image_base64("muziris.png")
+    img_myg = load_image_base64("myg.png")
+
+    m_base = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 16px, black 16.5px), radial-gradient(circle at 100% 0, transparent 16px, black 16.5px), radial-gradient(circle at 0 100%, transparent 16px, black 16.5px), radial-gradient(circle at 100% 100%, transparent 16px, black 16.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
+    m_border = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 22px, black 22.5px), radial-gradient(circle at 100% 0, transparent 22px, black 22.5px), radial-gradient(circle at 0 100%, transparent 22px, black 22.5px), radial-gradient(circle at 100% 100%, transparent 22px, black 22.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
+    m_inner = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 28px, black 28.5px), radial-gradient(circle at 100% 0, transparent 28px, black 28.5px), radial-gradient(circle at 0 100%, transparent 28px, black 28.5px), radial-gradient(circle at 100% 100%, transparent 28px, black 28.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
+    
+    mt_base = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 8px, black 8.5px), radial-gradient(circle at 100% 0, transparent 8px, black 8.5px), radial-gradient(circle at 0 100%, transparent 8px, black 8.5px), radial-gradient(circle at 100% 100%, transparent 8px, black 8.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
+    mt_border = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 10px, black 10.5px), radial-gradient(circle at 100% 0, transparent 10px, black 10.5px), radial-gradient(circle at 0 100%, transparent 10px, black 10.5px), radial-gradient(circle at 100% 100%, transparent 10px, black 10.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
+    mt_inner = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 12px, black 12.5px), radial-gradient(circle at 100% 0, transparent 12px, black 12.5px), radial-gradient(circle at 0 100%, transparent 12px, black 12.5px), radial-gradient(circle at 100% 100%, transparent 12px, black 12.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
+
     # 1. HANDLE FESTIVAL COUPONS (LUCKY DRAW)
     if ticket_code.startswith("FEST-"):
         sales_df = conn.read(worksheet="Sales", ttl=0)
@@ -39,22 +52,8 @@ if "ticket" in st.query_params:
             buyer_name = match.iloc[0]['Buyer Name']
             buyer_mobile = match.iloc[0]['Mobile']
             
-            # Load assets for the premium HTML ticket
-            img_smrti = load_image_base64("smrti.png")
-            img_muziris = load_image_base64("muziris.png")
-            img_myg = load_image_base64("myg.png")
             img_luckydraw = load_image_base64("luckydraw.png")
             img_prizes = load_image_base64("prizes.png")
-
-            # Masks
-            m_base = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 16px, black 16.5px), radial-gradient(circle at 100% 0, transparent 16px, black 16.5px), radial-gradient(circle at 0 100%, transparent 16px, black 16.5px), radial-gradient(circle at 100% 100%, transparent 16px, black 16.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
-            m_border = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 22px, black 22.5px), radial-gradient(circle at 100% 0, transparent 22px, black 22.5px), radial-gradient(circle at 0 100%, transparent 22px, black 22.5px), radial-gradient(circle at 100% 100%, transparent 22px, black 22.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
-            m_inner = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 28px, black 28.5px), radial-gradient(circle at 100% 0, transparent 28px, black 28.5px), radial-gradient(circle at 0 100%, transparent 28px, black 28.5px), radial-gradient(circle at 100% 100%, transparent 28px, black 28.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
-            
-            # Mini Masks for ID Box
-            mt_base = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 8px, black 8.5px), radial-gradient(circle at 100% 0, transparent 8px, black 8.5px), radial-gradient(circle at 0 100%, transparent 8px, black 8.5px), radial-gradient(circle at 100% 100%, transparent 8px, black 8.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
-            mt_border = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 10px, black 10.5px), radial-gradient(circle at 100% 0, transparent 10px, black 10.5px), radial-gradient(circle at 0 100%, transparent 10px, black 10.5px), radial-gradient(circle at 100% 100%, transparent 10px, black 10.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
-            mt_inner = "-webkit-mask-image: radial-gradient(circle at 0 0, transparent 12px, black 12.5px), radial-gradient(circle at 100% 0, transparent 12px, black 12.5px), radial-gradient(circle at 0 100%, transparent 12px, black 12.5px), radial-gradient(circle at 100% 100%, transparent 12px, black 12.5px); -webkit-mask-position: top left, top right, bottom left, bottom right; -webkit-mask-size: 51% 51%; -webkit-mask-repeat: no-repeat;"
 
             ticket_html = f"""
             <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
@@ -111,7 +110,7 @@ if "ticket" in st.query_params:
         else:
             st.error("❌ Invalid or missing ticket code.")
 
-    # 2. HANDLE DONATION RECEIPTS
+    # 2. HANDLE DONATION RECEIPTS (NEW MATCHING DESIGN)
     elif ticket_code.startswith("DON-"):
         donations_df = conn.read(worksheet="Donations", ttl=0)
         match = donations_df[donations_df['Receipt Code'] == ticket_code]
@@ -120,19 +119,54 @@ if "ticket" in st.query_params:
             donor_name = match.iloc[0]['Donor Name']
             amount = match.iloc[0]['Amount']
             
-            with st.container(border=True):
-                st.markdown("### 🏵️ MUZIRIS JMI KERALA FESTIVAL 2026")
-                st.divider()
-                st.success("✅ **Official Donation Receipt**")
-                st.markdown(f"<h3 style='text-align:center; color:#1E3A8A;'>Receipt: {ticket_code}</h3>", unsafe_allow_html=True)
-                st.markdown(f"**Donor Name:** {donor_name}")
-                st.markdown(f"**Amount Contributed:** ₹{amount}")
-                st.divider()
-                st.info("🙏 Thank you for your generous support of the Malayali Committee!")
-                st.divider()
-                st.warning("🎁 **Exclusive Sponsor Offer:** Get 5% off smart gadgets at MyG! Use code JMIFEST5.")
-                # Updated to use the clickable link button
-                st.link_button("Claim 5% Off Now", myg_url, type="primary") 
+            receipt_html = f"""
+            <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+            <div style="filter: drop-shadow(0px 8px 15px rgba(0,0,0,0.3)); max-width: 420px; margin: auto; font-family: 'Arial', sans-serif;">
+            <div style="position: relative;">
+            <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #FFF9E6; {m_base} z-index: 1;"></div>
+            <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #E32636; border: 6px solid transparent; background-clip: padding-box; {m_border} z-index: 2;"></div>
+            <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #FFF9E6; border: 12px solid transparent; background-clip: padding-box; {m_inner} z-index: 3;"></div>
+            
+            <div style="position: relative; z-index: 4; padding: 26px 26px 25px 26px; text-align: center;">
+            
+            <div style="padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; gap: 5px;"><img src="{img_smrti}" style="height:42px;"><img src="{img_muziris}" style="height:42px;"></div>
+            <div style="color:#E32636; flex-grow:1;"><h3 style="margin:0; font-size:14px;">MUZIRIS JMI</h3></div>
+            <img src="{img_myg}" style="height:32px; background:white; padding:4px; border-radius:4px; border:1px solid #E32636;">
+            </div>
+            
+            <h2 style="color: #E32636; margin: 15px 0 25px 0; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">Donation Receipt</h2>
+            
+            <div style="margin: 0 auto 25px auto; position: relative; display: inline-block;">
+            <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #088F8F; {mt_base} z-index: 1;"></div>
+            <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #8F0808; border: 2px solid transparent; background-clip: padding-box; {mt_border} z-index: 2;"></div>
+            <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-color: #088F8F; border: 4px solid transparent; background-clip: padding-box; {mt_inner} z-index: 3;"></div>
+            <div style="position: relative; z-index: 4; padding: 8px 20px; color: white; font-size: 18px; font-weight: bold;">Receipt: {ticket_code}</div>
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin: 4px 0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span style="font-size:26px; font-family:'Aref Ruqaa', serif; color: #222; margin-top: -4px;">{donor_name}</span></div>
+                <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin: 4px 0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg><span style="font-size:22px; font-family:'Amiri', serif; color: #222;">₹{amount}</span></div>
+            </div>
+
+            <hr style="border-top: 2px dashed rgba(227,38,54,0.4); margin:25px 10px 15px 10px;">
+            <p style="font-size:16px; color:#222; margin-top:10px; font-weight:bold;">🙏 Thank you for your generous support!</p>
+            </div></div>
+            <div style="text-align:center; color:#E32636; font-size:18px; margin:-14px 0; position:relative; z-index:10; letter-spacing:4px;">✂ - - - - - - - - - -</div>
+            
+            <div style="background-color:#E32636; {m_base} padding:20px; text-align:center; position:relative;">
+            <p style="color:#FFF9E6; font-size:12px; text-transform:uppercase; font-weight:bold; margin:0 0 8px 0;">Exclusive Sponsor Offer</p>
+            <a href="{myg_url}" target="_blank" style="text-decoration:none; display:block;">
+                <img src="{img_myg}" style="height:40px; background:white; padding:5px; border-radius:5px; margin-bottom:10px; display:inline-block;">
+                <div style="background:#FF6600; color:white; padding:10px; border-radius:8px; border:2px dashed white; font-weight:bold; cursor:pointer;">
+                    🎁 Use code JMIFEST5 for 5% OFF!
+                </div>
+            </a>
+            
+            </div></div>
+            """
+            st.markdown(receipt_html, unsafe_allow_html=True)
+            
         else:
             st.error("❌ Invalid or missing receipt code.")
             
